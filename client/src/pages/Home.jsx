@@ -20,10 +20,10 @@ function Home() {
                 gap: "20px",
                 width: "300px"
             }}>
-                <button onClick={() => {
+                <button className='extra' onClick={() => {
                     navigate('/create')
                 }}>Criar sala</button>
-                <button onClick={() => {
+                <button className='extra' onClick={() => {
                     navigate('/join')
                 }}>Entrar na sala</button>
             </fieldset>

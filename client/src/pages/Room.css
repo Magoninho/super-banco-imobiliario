@@ -1,0 +1,6 @@
+.success {
+    background-color: var(--success) !important;
+}
+.danger {
+    background-color: var(--danger) !important;
+}
