@@ -18,7 +18,7 @@ function Home() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "20px",
-                width: "300p"
+                width: "300px"
             }}>
                 <button onClick={() => {
                     navigate('/create')
