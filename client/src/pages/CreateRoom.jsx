@@ -71,6 +71,7 @@ export default function Login() {
                     <input
                         type="text"
                         value={roomName}
+                        required={true}
                         onChange={(e) => { setRoomName(e.target.value) }}
                     />
                     <label>Nome da sala</label>
@@ -79,6 +80,7 @@ export default function Login() {
                     <input
                         type="password"
                         value={password}
+                        required={true}
                         onChange={(e) => { setPassword(e.target.value) }}
                     />
                     <label>Crie uma senha</label>
