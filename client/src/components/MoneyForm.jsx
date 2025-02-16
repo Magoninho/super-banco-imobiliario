@@ -1,5 +1,9 @@
+import { useState } from "react";
+
 function MoneyForm({ type = "receive" }) { // it can be either "receive" or "waste"
+    const [value, setValue] = useState(0);
     return (
+        
         <form style={{
             backgroundColor: "#fff",
             padding: 20,
@@ -7,23 +11,29 @@ function MoneyForm({ type = "receive" }) { // it can be either "receive" or "was
             borderRadius: 10
             }} onSubmit={(e) => {
                 e.preventDefault();
-                if (nickname) {
+                if (value) {
                     handleSubmit(e);
                 }
             }}>
             <fieldset>
-                <legend>Defina seu nickname</legend>
-                <div className="field border label">
+                <legend>Quanto você quer { type == "receive" ? "receber" : "gastar"}?</legend>
+                <div className="field border label prefix">
+                    <i>attach_money</i>
                     <input
-                        type="text"
+                        type="number"
                         required={true}
-                        value={nickname}
-                        onChange={(e) => { setNickname(e.target.value) }}
+                        value={value}
+                        onChange={(e) => { setValue(e.target.value) }}
                     />
-                    <label>Nickname</label>
+                    <label>Quantia</label>
                 </div>
 
-                <button className="responsive">Ok</button>
+                {type == "receive" ?
+                    <button className="responsive success"><i>add</i>Receber</button>
+                    :
+
+                    <button className="responsive danger"><i>remove</i>Gastar</button>
+                }
             </fieldset>
         </form>
     );

@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./Room.css";
 import Modal from "../components/Modal";
 import NicknameForm from "../components/NicknameForm";
+import MoneyForm from "../components/MoneyForm";
 
 function Room() {
     const [admin, setAdmin] = useState(false);
@@ -19,7 +20,8 @@ function Room() {
         <>
             {modal && 
             <Modal>
-                <NicknameForm handleSubmit={handleNicknameSubmit} />
+                {/* <NicknameForm handleSubmit={handleNicknameSubmit} /> */}
+                <MoneyForm type="receive" />
             </Modal>}
             <div style={{
                 display: "flex",
