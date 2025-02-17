@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Room.css";
 import Modal from "../components/Modal";
 import NicknameForm from "../components/NicknameForm";
@@ -12,9 +12,16 @@ function Room() {
     // modals
     const [playerList, setPlayerList] = useState(false);
     const [inviteWindow, setInviteWindow] = useState(false);
-    const [nicknameModal, setNicknameModal] = useState(true);
+    const [nicknameModal, setNicknameModal] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
     const [wasteModal, setWasteModal] = useState(false);
+
+    useEffect(() => {
+
+        // TODO: check token and stuff from the api
+
+        setNicknameModal(true);
+    }, []);
 
     const handleNicknameSubmit = (e) => {
         e.preventDefault();
@@ -46,10 +53,10 @@ function Room() {
 
     return (
         <>
-            {/* {nicknameModal && 
+            {nicknameModal && 
             <Modal>
                 <NicknameForm handleSubmit={handleNicknameSubmit} />
-            </Modal>} */}
+            </Modal>}
 
             {inviteWindow &&
                 <Modal>
