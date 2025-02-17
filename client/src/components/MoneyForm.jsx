@@ -5,7 +5,7 @@ function MoneyForm({ type = "receive", handleSubmit, handleCancel }) { // it can
     return (
         
         <form style={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--background)",
             padding: 20,
             border: "1px solid lightgray",
             borderRadius: 10
@@ -37,7 +37,7 @@ function MoneyForm({ type = "receive", handleSubmit, handleCancel }) { // it can
                 }
                 <br />
                 <br />
-                <button className="responsive border" style={{color: "#bb1614"}} type="button" onClick={(e) => {
+                <button className="responsive border" style={{color: "var(--danger)"}} type="button" onClick={(e) => {
                     handleCancel(e);
                 }}><i>close</i>Cancelar</button>
 

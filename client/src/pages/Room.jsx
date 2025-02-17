@@ -3,9 +3,13 @@ import "./Room.css";
 import Modal from "../components/Modal";
 import NicknameForm from "../components/NicknameForm";
 import MoneyForm from "../components/MoneyForm";
+import PlayerList from "../components/PlayerList";
 
 function Room() {
     const [admin, setAdmin] = useState(false);
+    
+    // modals
+    const [playerList, setPlayerList] = useState(false);
     const [nicknameModal, setNicknameModal] = useState(true);
     const [receiveModal, setReceiveModal] = useState(false);
     const [wasteModal, setWasteModal] = useState(false);
@@ -40,10 +44,18 @@ function Room() {
 
     return (
         <>
-            {nicknameModal && 
+            {/* {nicknameModal && 
             <Modal>
                 <NicknameForm handleSubmit={handleNicknameSubmit} />
-            </Modal>}
+            </Modal>} */}
+
+            {playerList && 
+                <Modal>
+                    <PlayerList onClose={() => {
+                        setPlayerList(false);
+                    }} />
+                </Modal>
+            }
 
             {receiveModal &&
                 <Modal>
@@ -75,7 +87,9 @@ function Room() {
                     flexWrap: "wrap", 
                     alignItems: "center",
                 }}>
-                    <button><i>Group</i>Jogadores</button>
+                    <button onClick={() => {
+                        setPlayerList(true);
+                    }}><i>Group</i>Jogadores</button>
                     {admin && <button><i>settings</i>Opções</button>}
                     <button><i>share</i>Convidar</button>
                 </div>

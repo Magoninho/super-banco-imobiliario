@@ -5,7 +5,7 @@ function NicknameForm({ handleSubmit }) {
 
     return (
         <form style={{
-            backgroundColor: "#fff",
+            backgroundColor: "var(--background)",
             padding: 20,
             border: "1px solid lightgray",
             borderRadius: 10
