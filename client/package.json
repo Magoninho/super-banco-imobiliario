@@ -16,6 +16,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.7.9",
     "beercss": "^3.8.0",
+    "copy-to-clipboard": "^3.3.3",
     "material-dynamic-colors": "^1.1.2",
     "materialize-css": "^1.0.0-rc.2",
     "nes.css": "^2.2.1",
