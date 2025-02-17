@@ -8,7 +8,6 @@ function PlayerList({ onClose }) {
                 padding: 10
             }}>
                 <div style={{
-                    // textAlign: "right"
                     display: "flex",
                     justifyContent: "space-between"
                 }}>
@@ -43,82 +42,6 @@ function PlayerList({ onClose }) {
                             <tr>
                                 <td>Jogador 3</td>
                                 <td>$ 5.455</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
                             </tr>
                             <tr>
                                 <td>Jogador 4</td>
