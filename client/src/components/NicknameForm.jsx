@@ -10,7 +10,6 @@ function NicknameForm({ handleSubmit }) {
             border: "1px solid lightgray",
             borderRadius: 10
             }} onSubmit={(e) => {
-                e.preventDefault();
                 if (nickname) {
                     handleSubmit(e);
                 }

@@ -6,28 +6,61 @@ import MoneyForm from "../components/MoneyForm";
 
 function Room() {
     const [admin, setAdmin] = useState(false);
-    const [modal, setModal] = useState(true);
+    const [nicknameModal, setNicknameModal] = useState(true);
+    const [receiveModal, setReceiveModal] = useState(false);
+    const [wasteModal, setWasteModal] = useState(false);
     
     const handleNicknameSubmit = (e) => {
         e.preventDefault();
 
         // TODO: send request to set nickname
 
-        setModal(false);
+        setNicknameModal(false);
     };
+
+    const handleMoneySubmit = (e, type, value) => {
+        e.preventDefault();
+
+        // TODO: only proceed if value is greater than 0
+
+        // TODO:
+        // if type == receive then do stuff to add money on the api
+        // if type == waste then do stuff to remove money on the api
+
+        
+        setReceiveModal(false);
+        setWasteModal(false);
+    }
+
+    const handleCancel = (e) => {
+        e.preventDefault();
+        setReceiveModal(false);
+        setWasteModal(false);
+    }
 
     return (
         <>
-            {modal && 
+            {nicknameModal && 
             <Modal>
-                {/* <NicknameForm handleSubmit={handleNicknameSubmit} /> */}
-                <MoneyForm type="receive" />
+                <NicknameForm handleSubmit={handleNicknameSubmit} />
             </Modal>}
+
+            {receiveModal &&
+                <Modal>
+                    <MoneyForm handleSubmit={handleMoneySubmit} handleCancel={handleCancel} type="receive" />
+                </Modal>
+            }
+
+            {wasteModal &&
+                <Modal>
+                    <MoneyForm handleSubmit={handleMoneySubmit} handleCancel={handleCancel} type="waste" />
+                </Modal>
+            }
             <div style={{
                 display: "flex",
                 flexDirection: "column",
                 margin: "auto",
-                width: "fit-content", // TODO: sera que compensa?
+                width: "fit-content",
                 height: "100vh",
                 justifyContent: "space-between"
             }}>
@@ -73,7 +106,10 @@ function Room() {
                     margin: "auto",
                     gap: "40px"
                 }}>
-                    <button className="small-round primary extra small-elevate success">
+                    <button className="small-round primary extra small-elevate success"
+                            onClick={() => {
+                                setReceiveModal(true);
+                            }}>
                         <i>add</i>
                         <span>Receber</span>
                     </button>
@@ -82,7 +118,10 @@ function Room() {
                         <i>sync_alt</i>
                         <span>Tranferir</span>
                     </button>
-                    <button className="small-round primary extra small-elevate danger">
+                    <button className="small-round primary extra small-elevate danger"
+                            onClick={() => {
+                                setWasteModal(true);
+                            }}>
                         <i>remove</i>
                         <span>Gastar</span>
                     </button>

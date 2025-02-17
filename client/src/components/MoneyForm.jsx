@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function MoneyForm({ type = "receive" }) { // it can be either "receive" or "waste"
+function MoneyForm({ type = "receive", handleSubmit, handleCancel }) { // it can be either "receive" or "waste"
     const [value, setValue] = useState(0);
     return (
         
@@ -12,7 +12,7 @@ function MoneyForm({ type = "receive" }) { // it can be either "receive" or "was
             }} onSubmit={(e) => {
                 e.preventDefault();
                 if (value) {
-                    handleSubmit(e);
+                    handleSubmit(e, type, value);
                 }
             }}>
             <fieldset>
@@ -21,6 +21,7 @@ function MoneyForm({ type = "receive" }) { // it can be either "receive" or "was
                     <i>attach_money</i>
                     <input
                         type="number"
+                        min={1}
                         required={true}
                         value={value}
                         onChange={(e) => { setValue(e.target.value) }}
@@ -34,6 +35,12 @@ function MoneyForm({ type = "receive" }) { // it can be either "receive" or "was
 
                     <button className="responsive danger"><i>remove</i>Gastar</button>
                 }
+                <br />
+                <br />
+                <button className="responsive border" style={{color: "#bb1614"}} type="button" onClick={(e) => {
+                    handleCancel(e);
+                }}><i>close</i>Cancelar</button>
+
             </fieldset>
         </form>
     );
