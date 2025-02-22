@@ -1,9 +1,15 @@
 import express from "npm:express";
+import { createTables } from "./config/db.ts";
+
+const PORT = 3000;
 
 const app = express();
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the Dinosaur API!");
+  createTables();
+  res.sendStatus(200);
 });
 
-app.listen(8000);
+app.listen(PORT, () => {
+  console.log("Server listening on port " + PORT);
+});

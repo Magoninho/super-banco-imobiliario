@@ -8,6 +8,7 @@
     "cors": "npm:cors@^2.8.5",
     "dotenv": "npm:dotenv@^16.4.7",
     "express": "npm:express@^4.21.2",
-    "jsonwebtoken": "npm:jsonwebtoken@^9.0.2"
+    "jsonwebtoken": "npm:jsonwebtoken@^9.0.2",
+    "sqlite": "npm:sqlite@^5.1.1"
   }
 }
