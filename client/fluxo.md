@@ -32,7 +32,7 @@ Caso o usuário atualize a pagina sem querer
 2. usuario preenche os dados da sala (pin e senha)
 3. se já haver um token no localstorage
 4. se não, é criado um novo token e o usuario entra na sala
-
+'
 
 # fluxo da gameplay (com socket.io)
 ## Botao receber/gastar
