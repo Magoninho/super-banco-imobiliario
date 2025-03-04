@@ -40,7 +40,7 @@ function generateRandomCode(): string {
 
 router.post('/create', async (req, res) => {
 
-	const { roomName, password } = req.body;
+	const { username, roomName, password } = req.body;
 	const hashedPassword = await bcrypt.hash(password);
 
 	try {
@@ -59,8 +59,8 @@ router.post('/create', async (req, res) => {
 		const { room_id } = db.prepare('SELECT room_id FROM rooms WHERE room_code = ?').get(roomCode);
 
 		const playerId = (db.prepare(
-			`INSERT INTO players (nickname, has_set_nickname, admin, room_id) VALUES (?, ?, ?, ?);`
-		).run("Guest", 0, 1, room_id))['lastInsertRowid'];
+			`INSERT INTO players (nickname, admin, room_id) VALUES (?, ?, ?);`
+		).run(username, 1, room_id))['lastInsertRowid'];
 
 
 
