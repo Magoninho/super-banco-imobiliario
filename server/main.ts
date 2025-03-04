@@ -2,6 +2,7 @@ import express from "npm:express";
 import cors from 'cors';
 import { db } from "./config/db.ts";
 import { router as roomRouter } from './routes/roomRoutes.ts';
+import 'dotenv/config';
 
 const PORT = 3000;
 
