@@ -38,6 +38,7 @@ function generateRandomCode(): string {
 }
 
 
+// TODO: implement ZOD to validade stuff being sent
 router.post('/create', async (req, res) => {
 
 	const { username, roomName, password } = req.body;
@@ -50,20 +51,17 @@ router.post('/create', async (req, res) => {
 			roomCode = generateRandomCode();
 		}
 
-		db.prepare(
+		const roomId = (db.prepare(
 			`
 			INSERT INTO rooms (room_name, room_code, password) VALUES (?, ?, ?);
 			`,
-		).run(roomName, roomCode, hashedPassword);
-
-		const { room_id } = db.prepare('SELECT room_id FROM rooms WHERE room_code = ?').get(roomCode);
+		).run(roomName, roomCode, hashedPassword))['lastInsertRowid'];
 
 		const playerId = (db.prepare(
 			`INSERT INTO players (nickname, admin, room_id) VALUES (?, ?, ?);`
-		).run(username, 1, room_id))['lastInsertRowid'];
+		).run(username, 1, roomId))['lastInsertRowid'];
 
-
-
+		// JWT token sign
 		const token = jwt.sign({
 			playerId
 		}, process.env.JWT_SECRET, { expiresIn: '10s' });
