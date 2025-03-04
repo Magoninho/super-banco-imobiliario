@@ -5,6 +5,7 @@ import logo from '../assets/SUPER.png'
 import "beercss";
 
 export default function Login() {
+    const [username, setUsername] = useState("");
     const [roomName, setRoomName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -44,7 +45,7 @@ export default function Login() {
         alert("todo");
     };
     return (
-        
+
         <div style={{
             display: "flex",
             justifyContent: "center",
@@ -52,7 +53,7 @@ export default function Login() {
             height: "100vh",
             flexDirection: "column"
         }}>
-            <img src={logo} width={300} style={{margin: 0}} />
+            <img src={logo} width={300} style={{ margin: 0 }} />
 
             <form onSubmit={handleSubmit} style={{
                 display: "flex",
@@ -66,32 +67,44 @@ export default function Login() {
                     justifyContent: "center",
                     flexDirection: "column"
                 }}>
-                <legend>Criar</legend>
-                <div className="field border label">
-                    <input
-                        type="text"
-                        value={roomName}
-                        required={true}
-                        onChange={(e) => { setRoomName(e.target.value) }}
-                    />
-                    <label>Nome da sala</label>
-                </div>
-                <div className="field border label">
-                    <input
-                        type="password"
-                        value={password}
-                        required={true}
-                        onChange={(e) => { setPassword(e.target.value) }}
-                    />
-                    <label>Crie uma senha</label>
-                </div>
+                    <legend>Criar</legend>
+                    <div className="field border label prefix" style={{width: 264}}>
+                        <i>person</i>
+                        <input
+                            type="text"
+                            value={roomName}
+                            required={true}
+                            onChange={(e) => { setRoomName(e.target.value) }}
+                        />
+                        <label>Seu nickname</label>
+                    </div>
+                    <div className="field border label prefix" style={{ width: 264 }}>
+                        <i>sticky_note</i>
+                        <input
+                            type="text"
+                            value={username}
+                            required={true}
+                            onChange={(e) => { setUsername(e.target.value) }}
+                        />
+                        <label>Nome da sala</label>
+                    </div>
+                    <div className="field border label prefix" style={{ width: 264 }}>
+                        <i>password</i>
+                        <input
+                            type="password"
+                            value={password}
+                            required={true}
+                            onChange={(e) => { setPassword(e.target.value) }}
+                        />
+                        <label>Senha da sala</label>
+                    </div>
 
-                <button className='responsive' type="submit">
-                    <i>arrow_forward</i>
-                    <span>Criar sala</span>
-                </button>
-                {error && <p style={{color: "red"}}>{error}</p>}
-                
+                    <button className='responsive' type="submit">
+                        <i>arrow_forward</i>
+                        <span>Criar sala</span>
+                    </button>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+
                 </fieldset>
 
             </form>

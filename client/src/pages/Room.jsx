@@ -12,16 +12,8 @@ function Room() {
     // modals
     const [playerList, setPlayerList] = useState(false);
     const [inviteWindow, setInviteWindow] = useState(false);
-    const [nicknameModal, setNicknameModal] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
     const [wasteModal, setWasteModal] = useState(false);
-
-    useEffect(() => {
-
-        // TODO: check token and stuff from the api
-
-        setNicknameModal(true);
-    }, []);
 
     const handleNicknameSubmit = (e) => {
         e.preventDefault();
@@ -53,11 +45,6 @@ function Room() {
 
     return (
         <>
-            {nicknameModal && 
-            <Modal>
-                <NicknameForm handleSubmit={handleNicknameSubmit} />
-            </Modal>}
-
             {inviteWindow &&
                 <Modal>
                     <Invite onClose={() => {

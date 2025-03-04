@@ -45,7 +45,7 @@ export default function Login() {
     };
 
     return (
-        
+
         <div style={{
             display: "flex",
             justifyContent: "center",
@@ -53,7 +53,7 @@ export default function Login() {
             height: "100vh",
             flexDirection: "column"
         }}>
-            <img src={logo} width={300} style={{margin: 0}} />
+            <img src={logo} width={300} style={{ margin: 0 }} />
 
             <form onSubmit={handleSubmit} style={{
                 display: "flex",
@@ -67,32 +67,44 @@ export default function Login() {
                     justifyContent: "center",
                     flexDirection: "column"
                 }}>
-                <legend>Entrar</legend>
-                <div className="field border label">
-                    <input
-                        type="text"
-                        value={roomName}
-                        required={true}
-                        onChange={(e) => { setRoomName(e.target.value) }}
-                    />
-                    <label>PIN da sala</label>
-                </div>
-                <div className="field border label">
-                    <input
-                        type="password"
-                        value={password}
-                        required={true}
-                        onChange={(e) => { setPassword(e.target.value) }}
-                    />
-                    <label>Senha</label>
-                </div>
+                    <legend>Entrar</legend>
+                    <div className="field border label prefix" style={{ width: 264 }}>
+                        <i>person</i>
+                        <input
+                            type="text"
+                            value={roomName}
+                            required={true}
+                            onChange={(e) => { setRoomName(e.target.value) }}
+                        />
+                        <label>Seu nickname</label>
+                    </div>
+                    <div className="field border label prefix" style={{ width: 264 }}>
+                        <i>vpn_key</i>
+                        <input
+                            type="text"
+                            value={roomName}
+                            required={true}
+                            onChange={(e) => { setRoomName(e.target.value) }}
+                        />
+                        <label>Código da sala</label>
+                    </div>
+                    <div className="field border label prefix" style={{ width: 264 }}>
+                        <i>password</i>
+                        <input
+                            type="password"
+                            value={password}
+                            required={true}
+                            onChange={(e) => { setPassword(e.target.value) }}
+                        />
+                        <label>Senha</label>
+                    </div>
 
-                <button className='responsive' type="submit">
-                    <i>arrow_forward</i>
-                    <span>Entrar na sala</span>
-                </button>
-                {error && <p style={{color: "red"}}>{error}</p>}
-                
+                    <button className='responsive' type="submit">
+                        <i>arrow_forward</i>
+                        <span>Entrar na sala</span>
+                    </button>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
+
                 </fieldset>
 
             </form>
