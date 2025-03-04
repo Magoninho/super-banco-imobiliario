@@ -3,6 +3,7 @@ import { db } from '../config/db.ts';
 import jwt from 'jsonwebtoken';
 import process from "node:process";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
+import { body, validationResult } from 'express-validator';
 
 export const router = express.Router();
 
@@ -39,9 +40,19 @@ function generateRandomCode(): string {
 
 
 // TODO: implement ZOD to validade stuff being sent
-router.post('/create', async (req, res) => {
+router.post('/create', [
+	body('username').trim().notEmpty().withMessage("username is required"),
+	body('roomName').trim().notEmpty().withMessage("room name is required"),
+	body('password').isLength({min: 3}).withMessage("password should be at least 6 characters long")
+], async (req, res) => {
+	// making form validation
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
 
 	const { username, roomName, password } = req.body;
+
 	const hashedPassword = await bcrypt.hash(password);
 
 	try {
