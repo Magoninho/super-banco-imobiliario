@@ -75,7 +75,7 @@ router.post('/create', [
 		// JWT token sign
 		const token = jwt.sign({
 			playerId
-		}, process.env.JWT_SECRET, { expiresIn: '10s' });
+		}, process.env.JWT_SECRET, { expiresIn: '1d' });
 
 		res.status(200).json({
 			token,

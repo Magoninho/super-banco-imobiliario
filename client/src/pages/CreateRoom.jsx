@@ -42,7 +42,25 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert("todo");
+        setError("");
+
+        axios.post('http://localhost:3000/room/create', {
+            username,
+            roomName,
+            password
+        })
+            .then(function (response) {
+                const { token, roomCode } = response.data;
+                console.log(response.data);
+                localStorage.setItem('token', token);
+                // TODO: navigate to room
+            })
+            .catch(function (error) {
+                if (error.code == "ERR_NETWORK")
+                    setError("Falha na conexão com o servidor");
+                else
+                    setError('Credenciais invalidas');
+            });
     };
     return (
 
@@ -68,13 +86,13 @@ export default function Login() {
                     flexDirection: "column"
                 }}>
                     <legend>Criar</legend>
-                    <div className="field border label prefix" style={{width: 264}}>
+                    <div className="field border label prefix" style={{ width: 264 }}>
                         <i>person</i>
                         <input
                             type="text"
-                            value={roomName}
+                            value={username}
                             required={true}
-                            onChange={(e) => { setRoomName(e.target.value) }}
+                            onChange={(e) => { setUsername(e.target.value) }}
                         />
                         <label>Seu nickname</label>
                     </div>
@@ -82,9 +100,9 @@ export default function Login() {
                         <i>sticky_note</i>
                         <input
                             type="text"
-                            value={username}
+                            value={roomName}
                             required={true}
-                            onChange={(e) => { setUsername(e.target.value) }}
+                            onChange={(e) => { setRoomName(e.target.value) }}
                         />
                         <label>Nome da sala</label>
                     </div>
