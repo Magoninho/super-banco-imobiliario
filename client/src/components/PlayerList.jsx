@@ -15,11 +15,12 @@ function PlayerList({ onClose }) {
                     <button className="danger" onClick={onClose} style={{
                         padding: 0,
                         margin: 0
-                    }}><i>close</i></button>
+                }}><i>close</i></button>
                 </div>
                 <div style={{
                     maxHeight: "300px",
-                    overflow: "scroll"
+                    overflow: "scroll",
+                    overflowX: "hidden"
                 }}>
                     <table style={{
                         marginTop: 0
