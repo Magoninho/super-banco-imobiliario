@@ -5,20 +5,15 @@
     1. Requisicao enviada para a rota `/api/room/create` na api
     2. na api eh gerado um JWT assim como a sala eh criada no banco de dados junto com um PIN para ela
     3. a api retorna o token e o PIN (roomCode)
-    4. a api tambem cria um jogador inicial com um nome aleatorio na sala que vai ser marcado como admin
+    4. a api tambem cria um jogador inicial com um nome que foi informado pelo usuario na sala que vai **ser marcado como admin**
         **o id desse jogador inicial eh passado como informacao extra no token jwt**
 4. usuario eh redirecionado para a pagina da room que eh uma rota protegida no react router (`/room/<codigo>`)
-5. no useEffect eh enviado um POST com o token jwt para uma rota `/api/verify-token`, a fim de verificar se o usuario pode acessar
-    (parece redundante, mas caso o usuario atualize a pagina sem querer ele teria que reenviar o token de qualquer forma)
-6. se o usuario poder acessar, a pagina carrega e o popup de definir nickname aparece, se nao, ele eh enviado de volta para a pagina de entrar na sala
+5. no useEffect da protected route eh enviado um POST com o token jwt para uma rota `/api/verify-token`, a fim de verificar se o usuario pode acessar
+6. se o usuario poder acessar, a pagina carrega, se nao, ele eh enviado de volta para a pagina de entrar na sala
     1. ao mesmo tempo eh enviado uma mensagem do socket para entrar na room usando socket.join();
     2. o socket tambem sera responsavel por enviar uma mensagem informando a entrada do jogador, que podera ser convertido num pop up para todos os outros jogadores
     3. toda vez que o usuario entrar, um novo socket_id é gerado, este deve ser armazenado na coluna do banco de dados de cada jogador
-7. usuario insere o nickname, e ao clicar no botao, eh enviado uma requisição para a api na rota `/api/set-nickname`, onde vai ser passado o token (que possui o playerId correspondente)
-    1. o token eh verificado, se for valido, o nickname eh trocado na coluna do player no banco de dados
-    2. provavelmente vai ser necessario enviar uma mensagem ao socket informando a troca de nickname, para que o nome mude para todos os outros users
-    3. o valor da coluna `has_set_nickname` na tabela de players também será trocada para `true`
-8. o pop up some e o react atualiza onde for necessario
+
 
 ## Troubleshooting
 Caso o usuário atualize a pagina sem querer
