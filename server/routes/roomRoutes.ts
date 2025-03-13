@@ -4,24 +4,9 @@ import jwt from 'jsonwebtoken';
 import process from "node:process";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 import { body, validationResult } from 'express-validator';
+import { verifyToken } from "../middleware/verifyToken.ts";
 
 export const router = express.Router();
-
-const verifyToken: RequestParamHandler = (req, res, next) => {
-	const token = req.headers.authorization?.split(' ')[1];
-
-	if (!token) {
-		return res.status(401).json({ message: 'No token provided' });
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.JWT_SECRET)
-		// req.user = decoded;
-		next();
-	} catch (err) {
-		return res.status(401).json({ message: 'Token invalido' });
-	}
-};
 
 function generateRandomCode(): string {
 	const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -74,7 +59,8 @@ router.post('/create', [
 
 		// JWT token sign
 		const token = jwt.sign({
-			playerId
+			playerId,
+			roomCode
 		}, process.env.JWT_SECRET, { expiresIn: '1d' });
 
 		res.status(200).json({

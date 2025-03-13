@@ -44,6 +44,8 @@ export default function Login() {
         e.preventDefault();
         setError("");
 
+        // TODO: stop using axios because of security reasons
+
         axios.post('http://localhost:3000/room/create', {
             username,
             roomName,
@@ -53,7 +55,7 @@ export default function Login() {
                 const { token, roomCode } = response.data;
                 console.log(response.data);
                 localStorage.setItem('token', token);
-                // TODO: navigate to room
+                navigate(`/room/${roomCode}`);
             })
             .catch(function (error) {
                 if (error.code == "ERR_NETWORK")

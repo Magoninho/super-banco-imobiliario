@@ -1,43 +1,16 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import logo from '../assets/SUPER.png'
 import "beercss";
 
 export default function Login() {
-    const [roomName, setRoomName] = useState("");
+    const [searchParams] = useSearchParams();
+    const [username, setUsername] = useState("");
+    const [roomCode, setRoomCode] = useState(searchParams ? searchParams.get('code') : roomCode);
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     setError("");
-
-    //     if (!user || !password) {
-    //         setError("Email and password are required");
-    //         return;
-    //     }
-
-    //     axios.post('https://joofeliperi-jwt-authent-28.deno.dev/auth/login', {
-    //         username: user.trim(),
-    //         password: password
-    //     })
-    //         .then(function (response) {
-    //             const { token, username } = response.data;
-    //             console.log(response.data);
-    //             localStorage.setItem('token', token);
-    //             localStorage.setItem('username', username);
-    //             navigate('/home');
-    //         })
-    //         .catch(function (error) {
-    //             if (error.code == "ERR_NETWORK")
-    //                 setError("Falha na conexão com o servidor");
-    //             else
-    //                 setError('Credenciais invalidas');
-    //         });
-
-    // };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -72,9 +45,9 @@ export default function Login() {
                         <i>person</i>
                         <input
                             type="text"
-                            value={roomName}
+                            value={username}
                             required={true}
-                            onChange={(e) => { setRoomName(e.target.value) }}
+                            onChange={(e) => { setUsername(e.target.value) }}
                         />
                         <label>Seu nickname</label>
                     </div>
@@ -82,9 +55,9 @@ export default function Login() {
                         <i>vpn_key</i>
                         <input
                             type="text"
-                            value={roomName}
+                            value={roomCode}
                             required={true}
-                            onChange={(e) => { setRoomName(e.target.value) }}
+                            onChange={(e) => { setRoomCode(e.target.value) }}
                         />
                         <label>Código da sala</label>
                     </div>
@@ -96,7 +69,7 @@ export default function Login() {
                             required={true}
                             onChange={(e) => { setPassword(e.target.value) }}
                         />
-                        <label>Senha</label>
+                        <label>Senha da sala</label>
                     </div>
 
                     <button className='responsive' type="submit">

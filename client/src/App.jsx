@@ -6,6 +6,7 @@ import JoinRoom from './pages/JoinRoom'
 import 'beercss'
 import './App.css'
 import Room from './pages/Room'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   document.body.className = localStorage.getItem("theme") || "light";
@@ -23,9 +24,11 @@ function App() {
       } />
 
 
-      {/* TODO: protect this route */}
-      <Route path='/room' element={
-        <Room />
+      
+      <Route path='/room/:roomCode' element={
+        <ProtectedRoute>
+          <Room />
+        </ProtectedRoute>
       } />
     </Routes>
   )
