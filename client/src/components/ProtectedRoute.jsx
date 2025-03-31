@@ -47,7 +47,6 @@ function ProtectedRoute({ children }) {
             .catch(error => {
                 alert("Autenticação expirou com o seguinte erro: ", error);
                 setIsAuthenticated(false);
-                localStorage.removeItem('token');
                 navigate('/join');
             })
             .finally(() => {
