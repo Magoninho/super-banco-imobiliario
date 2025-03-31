@@ -1,4 +1,24 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+
 function PlayerList({ onClose }) {
+    const { roomCode } = useParams();
+    const [playerListState, setPlayerListState] = useState([]);
+
+    useEffect(() => {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+          };
+          
+          fetch(`http://localhost:3000/room/get-players?roomCode=${roomCode}`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                setPlayerListState(JSON.parse(result));
+            })
+            .catch(error => console.log('error', error));
+    }, [])
+
     return (
         <div style={{
             backgroundColor: "var(--background)",
@@ -32,22 +52,13 @@ function PlayerList({ onClose }) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Jogador 1</td>
-                                <td>$ 10.000</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 2</td>
-                                <td>$ 11.000</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 3</td>
-                                <td>$ 5.455</td>
-                            </tr>
-                            <tr>
-                                <td>Jogador 4</td>
-                                <td>$ 4.206</td>
-                            </tr>
+                            {
+                                playerListState.map((player) => 
+                                    <tr key={ player.player_id }>
+                                        <td>{player.nickname}</td>
+                                        <td>$ {player.balance}</td>
+                                    </tr>)
+                            }
                         </tbody>
                     </table>
                 </div>
