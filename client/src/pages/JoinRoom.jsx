@@ -14,7 +14,30 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert("todo");
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            username,
+            roomCode,
+            password
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:3000/room/join", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                const { token, roomCode } = result;
+                localStorage.setItem('token', token);
+                navigate(`/room/${roomCode}`);
+            })
+            .catch(error => console.log('error', error));
     };
 
     return (
