@@ -10,6 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   document.body.className = localStorage.getItem("theme") || "light";
+  document.title = "Super Banco Imobiliario";
 
   return (
     <Routes>
