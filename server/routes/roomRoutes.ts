@@ -1,7 +1,7 @@
 import { db } from "../config/db.ts";
 import { body, validationResult } from "express-validator";
-import express, { RequestHandler, RequestParamHandler } from "npm:express";
-import { createRoom, getPlayers } from "../controllers/roomController.ts";
+import express, { RequestHandler, Request, Response } from "npm:express";
+import { createRoom, getPlayers, joinRoom } from "../controllers/roomController.ts";
 
 import { verifyToken } from "../middleware/verifyToken.ts";
 
@@ -21,7 +21,7 @@ router.post("/create",
 
 router.get("/get-players", getPlayers);
 
-router.get("/verify-token", verifyToken as RequestHandler, (req, res) => {
+router.get("/verify-token", verifyToken as RequestHandler, (req: Request, res: Response) => {
   res.status(200).json({
     message: "Token valido",
   });

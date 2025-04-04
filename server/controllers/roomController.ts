@@ -1,10 +1,10 @@
-
+// @ts-types="npm:@types/express"
 import jwt from "jsonwebtoken";
 import process from "node:process";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
 import { verifyToken } from "../middleware/verifyToken.ts";
 import { SupportedValueType } from "node:sqlite";
-import express, { RequestHandler, RequestParamHandler } from "npm:express";
+import express, { Request, Response } from "npm:express";
 import { body, validationResult } from "express-validator";
 import { db } from "../config/db.ts";
 
@@ -25,7 +25,7 @@ function generateRandomCode(): string {
   return result;
 }
 
-export const createRoom = async (req, res) => {
+export const createRoom = async (req: Request, res: Response) => {
   // making form validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -81,7 +81,7 @@ export const createRoom = async (req, res) => {
 };
 
 
-export const getPlayers = (req, res) => {
+export const getPlayers = (req: Request, res: Response) => {
     // SELECT nickname FROM players WHERE room_id = (SELECT room_id FROM rooms WHERE room_code = "JASB2");
     //   let roomCode: string = req.query.roomCode;
     const { roomCode } = req.query;
