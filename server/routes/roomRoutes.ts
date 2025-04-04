@@ -14,9 +14,20 @@ router.post("/create",
     body("roomName").trim().notEmpty().withMessage("room name is required"),
     body("password")
       .isLength({ min: 3 })
-      .withMessage("password should be at least 6 characters long"),
+      .withMessage("password should be at least 3 characters long"),
   ], 
   createRoom
+);
+
+router.post("/join",
+  [
+    body("username").trim().notEmpty().withMessage("username is required"),
+    body("roomCode").trim().notEmpty().withMessage("room code is required"),
+    body("password")
+      .isLength({ min: 3 })
+      .withMessage("password should be at least 3 characters long"),
+  ], 
+    joinRoom
 );
 
 router.get("/get-players", getPlayers);

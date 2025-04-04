@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+// @ts-ignore
 // @ts-types="npm:@types/express"
 import jwt from "jsonwebtoken";
 import process from "node:process";
@@ -8,7 +10,12 @@ import express, { Request, Response } from "npm:express";
 import { body, validationResult } from "express-validator";
 import { db } from "../config/db.ts";
 
-
+interface Room {
+  room_id: number,
+  roomName: string,
+  roomCode: string,
+  password: string
+}
 
 function generateRandomCode(): string {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -80,6 +87,57 @@ export const createRoom = async (req: Request, res: Response) => {
   }
 };
 
+export const joinRoom = async (req: Request, res: Response) => {
+	// join room (nickname, room code, password)
+	//     create token, insert user on the database
+	// -> token
+
+  // making form validation
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { username, roomCode, password } = req.body;
+
+    const room: Room = db.prepare(`SELECT room_id, password FROM rooms WHERE room_code = ?;`).get(roomCode) as Room;
+  
+    const isMatch = await bcrypt.compare(password, room.password);
+  
+    // if the password matches
+    if (isMatch) {
+      // insert user on the database
+      const playerId = db
+        .prepare(
+          `INSERT INTO players (nickname, admin, room_id) VALUES (?, 0, ?);`
+        )
+        .run(username, room.room_id)["lastInsertRowid"];
+        
+        // JWT token sign
+      const token = jwt.sign(
+        {
+          playerId,
+          roomCode,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" }
+      );
+
+      return res.status(200).json({
+        token,
+        roomCode
+      });
+  
+    } else {
+      throw "Wrong password";
+    }
+  
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Error: " + err)
+  }
+};
 
 export const getPlayers = (req: Request, res: Response) => {
     // SELECT nickname FROM players WHERE room_id = (SELECT room_id FROM rooms WHERE room_code = "JASB2");
