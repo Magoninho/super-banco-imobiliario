@@ -1,8 +1,6 @@
-import { db } from "../config/db.ts";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import express, { RequestHandler, Request, Response } from "npm:express";
-import { createRoom, getPlayers, joinRoom } from "../controllers/roomController.ts";
-
+import { createRoom, getPlayersInRoom, joinRoom } from "../controllers/roomController.ts";
 import { verifyToken } from "../middleware/verifyToken.ts";
 
 export const router = express.Router();
