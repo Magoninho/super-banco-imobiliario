@@ -137,7 +137,7 @@ export const joinRoom = async (req: Request, res: Response) => {
   }
 };
 
-export const getPlayers = (req: Request, res: Response) => {
+export const getPlayersInRoom = (req: Request, res: Response) => {
     // SELECT nickname FROM players WHERE room_id = (SELECT room_id FROM rooms WHERE room_code = "JASB2");
     //   let roomCode: string = req.query.roomCode;
     const { roomCode } = req.query;
