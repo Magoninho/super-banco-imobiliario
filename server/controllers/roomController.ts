@@ -151,6 +151,7 @@ export const getPlayersInRoom = (req: Request, res: Response) => {
         .all(roomCode as string);
   
       res.status(200).send(players);
+      return;
     }
   
     res.status(200).send(
