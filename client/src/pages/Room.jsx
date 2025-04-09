@@ -7,13 +7,35 @@ import PlayerList from "../components/PlayerList";
 import Invite from "../components/Invite";
 
 function Room() {
+    const [isLoading, setIsLoading] = useState(true);
     const [admin, setAdmin] = useState(true);
+    const [playerState, setPlayerState] = useState(null);
 
     // modals
     const [playerList, setPlayerList] = useState(false);
     const [inviteWindow, setInviteWindow] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
     const [wasteModal, setWasteModal] = useState(false);
+
+
+    useEffect(() => {
+        // getting the player id from localStorage
+        const token = localStorage.getItem('token');
+        const playerId = jwtDecode(token).playerId;
+        
+        const requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch(`http://localhost:3000/player/get-player-info?playerId=${playerId}`, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                setPlayerState(result);
+                setIsLoading(false);
+            })
+            .catch(error => console.log('error', error));
+    }, []);
 
     const handleNicknameSubmit = (e) => {
         e.preventDefault();
@@ -41,6 +63,11 @@ function Room() {
         e.preventDefault();
         setReceiveModal(false);
         setWasteModal(false);
+    }
+
+
+    if (isLoading) {
+        return <div>Loading...</div>
     }
 
     return (
