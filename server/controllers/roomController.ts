@@ -30,11 +30,11 @@ function generateRandomCode(): string {
   return result;
 }
 
-export const createRoom = async (req: Request, res: Response) => {
+export const createRoom = async (req: Request, res: Response): Promise<any> => {
   // making form validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    res.status(400).json({ errors: errors.array() });
   }
 
   const { username, roomName, password } = req.body;
@@ -85,7 +85,7 @@ export const createRoom = async (req: Request, res: Response) => {
   }
 };
 
-export const joinRoom = async (req: Request, res: Response) => {
+export const joinRoom = async (req: Request, res: Response): Promise<any> => {
 	// join room (nickname, room code, password)
 	//     create token, insert user on the database
 	// -> token
@@ -93,7 +93,7 @@ export const joinRoom = async (req: Request, res: Response) => {
   // making form validation
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    res.status(400).json({ errors: errors.array() });
   }
 
   try {
@@ -122,7 +122,7 @@ export const joinRoom = async (req: Request, res: Response) => {
         { expiresIn: "1d" }
       );
 
-      return res.status(200).json({
+      res.status(200).json({
         token,
         roomCode
       });
@@ -133,7 +133,7 @@ export const joinRoom = async (req: Request, res: Response) => {
   
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Error: " + err)
+    res.status(500).send("Error: " + err)
   }
 };
 
@@ -150,10 +150,10 @@ export const getPlayersInRoom = (req: Request, res: Response) => {
         )
         .all(roomCode as string);
   
-      return res.status(200).send(players);
+      res.status(200).send(players);
     }
   
-    return res.status(200).send(
+    res.status(200).send(
       db.prepare("SELECT * FROM players;")
         .all()
     );
