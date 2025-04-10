@@ -111,15 +111,11 @@ function Room() {
                 justifyContent: "space-between"
             }}>
                 <div style={{
-                    textAlign: "center"
-                }}>
-                    <p><b>[Nome da sala]</b></p>
-                </div>
-                <div style={{
                     display: "flex",
                     justifyContent: "center",
                     flexWrap: "wrap",
                     alignItems: "center",
+                    margin: 20,
                     rowGap: 10
                 }}>
                     <button onClick={() => {
