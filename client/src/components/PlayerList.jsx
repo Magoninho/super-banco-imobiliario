@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import CrownIcon from "../assets/CrownIcon";
 
 function PlayerList({ onClose }) {
     const { roomCode } = useParams();
@@ -55,7 +56,7 @@ function PlayerList({ onClose }) {
                             {
                                 playerListState.map((player) => 
                                     <tr key={ player.player_id }>
-                                        <td>{player.nickname}</td>
+                                        <td>{player.admin == 1 && <CrownIcon />} {player.nickname}</td>
                                         <td>$ {player.balance}</td>
                                     </tr>)
                             }
