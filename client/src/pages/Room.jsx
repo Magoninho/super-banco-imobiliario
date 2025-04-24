@@ -24,14 +24,16 @@ function Room() {
     useEffect(() => {
         // getting the player id from localStorage
         const token = localStorage.getItem('token');
-        const playerId = jwtDecode(token).playerId;
         
         const requestOptions = {
             method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             redirect: 'follow'
         };
 
-        fetch(`http://localhost:3000/player/get-player-info?playerId=${playerId}`, requestOptions)
+        fetch(`http://localhost:3000/player/get-player-info`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 setPlayerState(result);
