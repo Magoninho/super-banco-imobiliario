@@ -1,4 +1,4 @@
-import express, { RequestHandler, RequestParamHandler } from 'npm:express';
+import { RequestParamHandler } from 'npm:express';
 import jwt from 'jsonwebtoken';
 import process from "node:process";
 
@@ -10,9 +10,9 @@ export const verifyToken: RequestParamHandler = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const _decoded = jwt.verify(token, process.env.JWT_SECRET);
         next();
-    } catch (err) {
+    } catch (_err) {
         return res.status(401).json({ message: 'Token invalido' });
     }
 };
