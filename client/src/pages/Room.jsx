@@ -134,7 +134,7 @@ function Room() {
                 }}>
                     <p>{playerState.admin == 1 ? <CrownIcon /> : <i>person</i>} {playerState.nickname} {playerState.admin == 1 && "(admin)"}</p>
                     
-                    <h6>Saldo: <b>$15.000</b></h6>
+                    <h6>Saldo: <b>$ { playerState.balance }</b></h6>
                 </div>
 
 
