@@ -4,8 +4,8 @@
 import jwt from "jsonwebtoken";
 import process from "node:process";
 import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
-import express, { Request, Response } from "npm:express";
-import { body, validationResult } from "express-validator";
+import { Request, Response } from "npm:express";
+import { validationResult } from "express-validator";
 import { db } from "../config/db.ts";
 
 interface Room {
