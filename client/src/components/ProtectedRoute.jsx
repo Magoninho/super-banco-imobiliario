@@ -13,7 +13,7 @@ function ProtectedRoute({ children }) {
         const token = localStorage.getItem('token');
 
         if (!token) {
-            alert("voce nao tem permissao para entrar nessa sala");
+            alert("Voce nao tem permissao para entrar nessa sala");
             setIsAuthenticated(false);
             setIsLoading(false);
             return;
@@ -23,7 +23,7 @@ function ProtectedRoute({ children }) {
         let decodedRoomCode = jwtDecode(token).roomCode;
 
         if (roomCode != decodedRoomCode) {
-            alert("voce nao tem permissao para entrar nessa sala");
+            alert("Voce nao tem permissao para entrar nessa sala");
             setIsAuthenticated(false);
             setIsLoading(false);
             return;
@@ -41,11 +41,17 @@ function ProtectedRoute({ children }) {
 
         fetch("http://localhost:3000/room/verify-token", requestOptions)
             .then(response => {
-                setIsAuthenticated(true);
-                return response.text();
+                if (response.ok) {
+                    setIsAuthenticated(true);
+                    return response.text();    
+                }
+
+                alert("Voce nao tem permissao para entrar nessa sala");
+                setIsAuthenticated(false);
+                navigate('/join');
             })
             .catch(error => {
-                alert("Autenticação expirou com o seguinte erro: ", error);
+                alert("Erro no servidor", error);
                 setIsAuthenticated(false);
                 navigate('/join');
             })
