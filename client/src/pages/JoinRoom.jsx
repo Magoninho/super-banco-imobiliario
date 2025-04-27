@@ -37,7 +37,13 @@ export default function Login() {
                 localStorage.setItem('token', token);
                 navigate(`/room/${roomCode}`);
             })
-            .catch(error => console.log('error', error));
+            .catch((error) => {
+                if (error.code == "ERR_NETWORK")
+                    setError("Falha na conexão com o servidor");
+                else
+                    setError('Credenciais invalidas');
+            });
+
     };
 
     return (

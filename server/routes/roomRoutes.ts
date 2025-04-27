@@ -2,6 +2,7 @@ import { body } from "express-validator";
 import express, { RequestHandler, Request, Response } from "npm:express";
 import { createRoom, getPlayersInRoom, joinRoom } from "../controllers/roomController.ts";
 import { verifyToken } from "../middleware/verifyToken.ts";
+import { socketHandler } from "../config/socketHandler.ts";
 
 export const router = express.Router();
 

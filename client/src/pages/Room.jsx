@@ -8,6 +8,8 @@ import Invite from "../components/Invite";
 import { jwtDecode } from "jwt-decode";
 import CrownIcon from "../assets/CrownIcon";
 import "beercss";
+import io from "socket.io-client";
+
 
 function Room() {
     const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +24,8 @@ function Room() {
 
 
     useEffect(() => {
+
+
         // getting the player id from localStorage
         const token = localStorage.getItem('token');
         
@@ -40,6 +44,22 @@ function Room() {
                 setIsLoading(false);
             })
             .catch(error => console.log('error', error));
+
+        // TODO: place the url somewhere else
+        const socket = io("http://localhost:3000", {
+            auth: {
+                token: token
+            }
+        }); 
+        
+        socket.on("user_joined", (userData) => {
+            alert("user just connected", userData.username); // TODO: implement a react component that does notification pop ups
+        })
+
+        return () => {
+            socket.disconnect();
+            console.log("Socket disconnected");
+        };    
     }, []);
 
     const handleNicknameSubmit = (e) => {

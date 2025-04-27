@@ -69,6 +69,7 @@ export const createRoom = async (req: Request, res: Response): Promise<any> => {
     const token = jwt.sign(
       {
         playerId,
+        username,
         roomCode,
       },
       process.env.JWT_SECRET,
@@ -80,7 +81,6 @@ export const createRoom = async (req: Request, res: Response): Promise<any> => {
       roomCode,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send("Error while trying to access the database");
   }
 };
@@ -116,6 +116,7 @@ export const joinRoom = async (req: Request, res: Response): Promise<any> => {
       const token = jwt.sign(
         {
           playerId,
+          username,
           roomCode,
         },
         process.env.JWT_SECRET,
@@ -132,7 +133,6 @@ export const joinRoom = async (req: Request, res: Response): Promise<any> => {
     }
   
   } catch (err) {
-    console.log(err);
     res.status(500).send("Error: " + err)
   }
 };
