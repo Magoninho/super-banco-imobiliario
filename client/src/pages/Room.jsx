@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 import "./Room.css";
 import Modal from "../components/Modal";
 import NicknameForm from "../components/NicknameForm";
 import MoneyForm from "../components/MoneyForm";
 import PlayerList from "../components/PlayerList";
 import Invite from "../components/Invite";
-import { jwtDecode } from "jwt-decode";
 import CrownIcon from "../assets/CrownIcon";
 import "beercss";
 import io from "socket.io-client";
@@ -21,6 +21,8 @@ function Room() {
     const [inviteWindow, setInviteWindow] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
     const [wasteModal, setWasteModal] = useState(false);
+    
+    const notify = () => toast("wow");
 
 
     useEffect(() => {
@@ -53,7 +55,31 @@ function Room() {
         }); 
         
         socket.on("user_joined", (userData) => {
-            alert("user just connected", userData.username); // TODO: implement a react component that does notification pop ups
+           toast.success(`${userData.username} entrou no jogo`, {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            }); 
+        });
+        
+        socket.on('user_left', (userData) => {
+            toast.error(`${userData.username} saiu do jogo`, {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
         })
 
         return () => {
@@ -187,7 +213,7 @@ function Room() {
                     </button>
                 </div>
             </div>
-
+            <ToastContainer />
         </>
     );
 }
