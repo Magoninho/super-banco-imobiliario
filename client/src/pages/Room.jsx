@@ -4,6 +4,7 @@ import "./Room.css";
 import Modal from "../components/Modal";
 import NicknameForm from "../components/NicknameForm";
 import MoneyForm from "../components/MoneyForm";
+import TransferModal from "../components/TransferModal";
 import PlayerList from "../components/PlayerList";
 import Invite from "../components/Invite";
 import CrownIcon from "../assets/CrownIcon";
@@ -21,6 +22,7 @@ function Room() {
     const [inviteWindow, setInviteWindow] = useState(false);
     const [receiveModal, setReceiveModal] = useState(false);
     const [wasteModal, setWasteModal] = useState(false);
+    const [transferModal, setTransferModal] = useState(false);
     
     const notify = () => toast("wow");
 
@@ -109,11 +111,16 @@ function Room() {
         setReceiveModal(false);
         setWasteModal(false);
     }
+    
+    const handleMoneyTransferSubmit = (e, value, player1, player2) => {
+
+    }
 
     const handleCancel = (e) => {
         e.preventDefault();
         setReceiveModal(false);
         setWasteModal(false);
+        setTransferModal(false);
     }
 
 
@@ -148,6 +155,12 @@ function Room() {
             {wasteModal &&
                 <Modal>
                     <MoneyForm handleSubmit={handleMoneySubmit} handleCancel={handleCancel} type="waste" />
+                </Modal>
+            }
+
+            {transferModal &&
+                <Modal>
+                    <TransferModal handleSubmit={handleMoneySubmit} handleCancel={handleCancel} />
                 </Modal>
             }
             <div style={{
@@ -200,7 +213,10 @@ function Room() {
                         <span>Receber</span>
                     </button>
 
-                    <button className="small-round secondary extra small-elevate">
+                    <button className="small-round secondary extra small-elevate"
+                        onClick={() => {
+                            setTransferModal(true);
+                        }}>
                         <i>sync_alt</i>
                         <span>Tranferir</span>
                     </button>

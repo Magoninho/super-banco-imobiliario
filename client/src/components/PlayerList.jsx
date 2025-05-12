@@ -15,7 +15,8 @@ function PlayerList({ onClose }) {
           fetch(`http://localhost:3000/room/get-players?roomCode=${roomCode}`, requestOptions)
             .then(response => response.text())
             .then(result => {
-                setPlayerListState(JSON.parse(result));
+                setPlayerListState(JSON.parse(result).filter((elem) => elem.active != 0));
+                console.log(result);
             })
             .catch(error => console.log('error', error));
     }, [])

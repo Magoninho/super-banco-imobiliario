@@ -108,7 +108,7 @@ export const joinRoom = async (req: Request, res: Response): Promise<any> => {
       // insert user on the database
       const playerId = db
         .prepare(
-          `INSERT INTO players (nickname, admin, room_id) VALUES (?, 0, ?);`
+          `INSERT INTO players (nickname, admin, room_id, created_at) VALUES (?, 0, ?, datetime('now'));`
         )
         .run(username, room.room_id)["lastInsertRowid"];
         
