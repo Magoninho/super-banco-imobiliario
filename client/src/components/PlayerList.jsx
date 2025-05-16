@@ -12,7 +12,10 @@ function PlayerList({ onClose }) {
             redirect: 'follow'
           };
           
-          fetch(`http://localhost:3000/room/get-players?roomCode=${roomCode}`, requestOptions)
+        // TODO: tirar o room code explicito da url e colocar o token nos headers
+        // que nem eu fiz no Room.jsx e no playerController.ts no backend
+        // assim eu evito problemas de segurança
+         fetch(`http://localhost:3000/room/get-players?roomCode=${roomCode}`, requestOptions)
             .then(response => response.text())
             .then(result => {
                 setPlayerListState(JSON.parse(result).filter((elem) => elem.active != 0));

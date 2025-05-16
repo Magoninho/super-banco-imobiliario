@@ -3,6 +3,7 @@ import process from "node:process";
 import { Socket } from "socket.io";
 import { ExtendedError } from "socket.io";
 
+
 export const socketAuth = (socket: Socket, next: (err?: ExtendedError) => void) => {
     const token = socket.handshake.auth.token;
     

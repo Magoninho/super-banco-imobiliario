@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import "./Room.css";
 import Modal from "../components/Modal";
@@ -12,10 +12,13 @@ import "beercss";
 import io from "socket.io-client";
 
 
+export const SocketContext = createContext();
+
 function Room() {
     const [isLoading, setIsLoading] = useState(true);
     const [admin, setAdmin] = useState(true);
     const [playerState, setPlayerState] = useState(null);
+    const [socket, setSocket] = useState(null);
 
     // modals
     const [playerList, setPlayerList] = useState(false);
@@ -28,8 +31,6 @@ function Room() {
 
 
     useEffect(() => {
-
-
         // getting the player id from localStorage
         const token = localStorage.getItem('token');
         
@@ -49,14 +50,23 @@ function Room() {
             })
             .catch(error => console.log('error', error));
 
-        // TODO: place the url somewhere else
-        const socket = io("http://localhost:3000", {
+        const newSocket = io("http://localhost:3000", {
             auth: {
                 token: token
             }
         }); 
         
-        socket.on("user_joined", (userData) => {
+        // SOCKET EVENTS
+        
+        // request approval dialog (for admin only)
+        newSocket.on("request-approval", (data) => {
+            if (data.type == "receive")
+                alert(`o usuario ${data.user.username} quer GANHAR ${data.value}`);
+            else
+                alert("um usuario quer GASTAR dinheiro");
+        });
+        
+        newSocket.on("user_joined", (userData) => {
            toast.success(`${userData.username} entrou no jogo`, {
                 position: "bottom-left",
                 autoClose: 5000,
@@ -70,7 +80,7 @@ function Room() {
             }); 
         });
         
-        socket.on('user_left', (userData) => {
+        newSocket.on('user_left', (userData) => {
             toast.error(`${userData.username} saiu do jogo`, {
                 position: "bottom-left",
                 autoClose: 5000,
@@ -82,10 +92,17 @@ function Room() {
                 theme: "colored",
                 transition: Bounce,
             });
-        })
+        });
+        
+        newSocket.connect();
+
+        setSocket(newSocket);
 
         return () => {
-            socket.disconnect();
+            if (socket) {
+                socket.disconnect();
+                setSocket(null);
+            }
             console.log("Socket disconnected");
         };    
     }, []);
@@ -116,7 +133,7 @@ function Room() {
 
     }
 
-    const handleCancel = (e) => {
+    const handleClose = (e) => {
         e.preventDefault();
         setReceiveModal(false);
         setWasteModal(false);
@@ -130,39 +147,42 @@ function Room() {
 
     return (
         <>
-            {inviteWindow &&
-                <Modal>
-                    <Invite onClose={() => {
-                        setInviteWindow(false);
-                    }} />
-                </Modal>
-            }
+            <SocketContext.Provider value={socket}>
+                {inviteWindow &&
+                    <Modal>
+                        <Invite onClose={() => {
+                            setInviteWindow(false);
+                        }} />
+                    </Modal>
+                }
 
-            {playerList &&
-                <Modal>
-                    <PlayerList onClose={() => {
-                        setPlayerList(false);
-                    }} />
-                </Modal>
-            }
+                {playerList &&
+                    <Modal>
+                        <PlayerList onClose={() => {
+                            setPlayerList(false);
+                        }} />
+                    </Modal>
+                }
 
-            {receiveModal &&
-                <Modal>
-                    <MoneyForm handleSubmit={handleMoneySubmit} handleCancel={handleCancel} type="receive" />
-                </Modal>
-            }
+                {receiveModal &&
+                    <Modal>
+                        <MoneyForm handleClose={handleClose} type="receive" />
+                    </Modal>
+                }
 
-            {wasteModal &&
-                <Modal>
-                    <MoneyForm handleSubmit={handleMoneySubmit} handleCancel={handleCancel} type="waste" />
-                </Modal>
-            }
+                {wasteModal &&
+                    <Modal>
+                        <MoneyForm handleClose={handleClose} type="waste" />
+                    </Modal>
+                }
 
-            {transferModal &&
-                <Modal>
-                    <TransferModal handleSubmit={handleMoneySubmit} handleCancel={handleCancel} />
-                </Modal>
-            }
+                {transferModal &&
+                    <Modal>
+                        <TransferModal handleClose={handleClose} />
+                    </Modal>
+                }
+            </SocketContext.Provider>
+
             <div style={{
                 display: "flex",
                 flexDirection: "column",
