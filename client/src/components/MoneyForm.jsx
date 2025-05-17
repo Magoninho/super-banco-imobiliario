@@ -12,8 +12,8 @@ function MoneyForm({ type = "receive", handleClose }) { // it can be either "rec
     }, []);
     
     const handleSubmit = (e, type, value) => {
-        console.log(socket.user);
         socket.emit("submission", { type, value })
+        handleClose(e);
     };
     
 
@@ -40,7 +40,7 @@ function MoneyForm({ type = "receive", handleClose }) { // it can be either "rec
                         min={1}
                         required={true}
                         value={value}
-                        onChange={(e) => { setValue(e.target.value) }}
+                        onChange={(e) => { setValue(parseInt(e.target.value)) }} // TODO: i know this is akward but i dont give a fuck
                     />
                     <label>Quantia</label>
                 </div>

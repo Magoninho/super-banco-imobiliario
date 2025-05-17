@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import "./Room.css";
 import Modal from "../components/Modal";
@@ -27,13 +27,10 @@ function Room() {
     const [wasteModal, setWasteModal] = useState(false);
     const [transferModal, setTransferModal] = useState(false);
     
-    const notify = () => toast("wow");
 
-
-    useEffect(() => {
-        // getting the player id from localStorage
+    const fetchUserData = useCallback(async () => {
         const token = localStorage.getItem('token');
-        
+
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -46,9 +43,19 @@ function Room() {
             .then(response => response.json())
             .then(result => {
                 setPlayerState(result);
+                console.log(result);
                 setIsLoading(false);
             })
             .catch(error => console.log('error', error));
+    }, []);
+    
+
+
+    useEffect(() => {
+        // getting the player id from localStorage
+        const token = localStorage.getItem('token');
+        
+        fetchUserData();
 
         const newSocket = io("http://localhost:3000", {
             auth: {
@@ -60,10 +67,43 @@ function Room() {
         
         // request approval dialog (for admin only)
         newSocket.on("request-approval", (data) => {
-            if (data.type == "receive")
-                alert(`o usuario ${data.user.username} quer GANHAR ${data.value}`);
-            else
-                alert("um usuario quer GASTAR dinheiro");
+            let answer = confirm(`o usuario ${data.user.username} quer ${ data.type == "receive" ? "GANHAR" : "GASTAR" } ${data.value}`);
+            
+            if (answer) {
+                newSocket.emit("response-accept", data);
+            } else {
+                newSocket.emit("response-deny", data);
+            }
+        });
+        
+        newSocket.on("status-update", (data) => {
+            if (data.response == "accept") {
+                toast.info(`O administrador ACEITOU sua solicitação de ${data.type == "receive" ? "RECEBER " + data.value : "GASTAR R$" + data.value }`, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+            } else {
+                toast.error(`O administrador RECUSOU sua solicitação de ${data.type == "receive" ? "RECEBER " + data.value : "GASTAR R$" + data.value }`, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+            }
+            
+            fetchUserData();
         });
         
         newSocket.on("user_joined", (userData) => {

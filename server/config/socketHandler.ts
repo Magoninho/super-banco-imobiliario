@@ -33,7 +33,7 @@ export const socketHandler = (io: Server) => {
             const numberValue = Number(data.value);
             
             if (isNaN(numberValue)) {
-                socket.emit("submission-response", {
+                socket.to(data.user.socket_id).emit("submission-response", {
                     success: false,
                     error: "Inputed value is not a number!"
                 });
@@ -41,12 +41,6 @@ export const socketHandler = (io: Server) => {
             }
             
             
-            if (socket.user.admin) {
-                // TODO: skip the request approval and receive/waste money already
-                return;
-            }
-            
-
             // find the admin in the room using the room code
             // deno-lint-ignore no-explicit-any
             const admin: any = db.prepare(`
@@ -57,16 +51,39 @@ export const socketHandler = (io: Server) => {
                     .get(roomCode);
             
             
-            // console.log(admin.socket_id);
+            if (socket.id == admin.socket_id) {
+                console.log("eu sou o admin otario")
+                return;
+                // TODO: skip the request approval and receive/waste money already
+            }
             
             socket.to(admin.socket_id).emit("request-approval", {...data, user: socket.user});
 
             console.log(socket.user, data);
+            
             // ONLY IN THE END OF ALL THING
             // socket.emit("submission-response", {
             //     success: true
             // });
         });
+        
+        socket.on("response-accept", (data) => {
+            const user = db.prepare(`
+                SELECT socket_id FROM players WHERE player_id = ?;`).get(data.user.playerId);
+            socket.to(user.socket_id).emit("status-update", {
+                ...data,
+                response: "accept",
+            });
+        });
+        
+        socket.on("response-deny", (data) => {
+            const user = db.prepare(`
+                SELECT socket_id FROM players WHERE player_id = ?;`).get(data.user.playerId);
+            socket.to(user.socket_id).emit("status-update", {
+                ...data,
+                response: "deny",
+            });
+        })
 
         socket.on('disconnect', () => {
             socket.to(roomCode).emit('user_left', (socket.user));
