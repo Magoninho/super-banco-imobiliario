@@ -68,12 +68,6 @@ export const socketHandler = (io: Server) => {
             }
             
             socket.to(admin.socket_id).emit("request-approval", {...data, user: socket.user});
-
-            
-            // ONLY IN THE END OF ALL THING
-            // socket.emit("submission-response", {
-            //     success: true
-            // });
         });
         
         socket.on("response-accept", (data) => {
@@ -106,7 +100,6 @@ export const socketHandler = (io: Server) => {
             // setting player as unactive
             db.prepare("UPDATE players SET active = 0 WHERE player_id = ?;")
                 .run(socket.user.playerId);
-            console.log(socket.user.playerId);
         });
     });
 };
