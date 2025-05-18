@@ -32,7 +32,13 @@ export const getPlayerInfo = (req: Request, res: Response) => {
 
         const { playerId } = decoded;
 
-        const player = db.prepare(`SELECT * FROM players WHERE player_id = ?;`)
+        // gets the player info, as well as the roomCode that he's in
+        const player = db.prepare(`
+                SELECT players.*, rooms.room_code FROM players 
+                INNER JOIN rooms 
+                ON rooms.room_id = players.room_id
+                WHERE player_id = ?; 
+            `)
             .all(playerId as string);
 
         if (player.length === 0) {

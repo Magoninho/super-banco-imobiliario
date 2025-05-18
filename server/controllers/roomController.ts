@@ -61,7 +61,7 @@ export const createRoom = async (req: Request, res: Response): Promise<any> => {
 
     const playerId = db
       .prepare(
-        `INSERT INTO players (nickname, admin, room_id) VALUES (?, ?, ?);`
+          `INSERT INTO players (nickname, admin, room_id, created_at) VALUES (?, ?, ?, datetime('now'));`
       )
       .run(username, 1, roomId)["lastInsertRowid"];
 

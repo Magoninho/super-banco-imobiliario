@@ -18,6 +18,7 @@ function Room() {
     const [isLoading, setIsLoading] = useState(true);
     const [admin, setAdmin] = useState(true);
     const [playerState, setPlayerState] = useState(null);
+    const [roomCode, setRoomCode] = useState(null);
     const [socket, setSocket] = useState(null);
 
     // modals
@@ -43,7 +44,6 @@ function Room() {
             .then(response => response.json())
             .then(result => {
                 setPlayerState(result);
-                console.log(result);
                 setIsLoading(false);
             })
             .catch(error => console.log('error', error));
