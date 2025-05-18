@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import logo from '../assets/SUPER.png'
 import "beercss";
 
-export default function Login() {
+export default function JoinRoom() {
     const [searchParams] = useSearchParams();
     const [username, setUsername] = useState("");
     const [roomCode, setRoomCode] = useState(searchParams ? searchParams.get('code') : roomCode);
