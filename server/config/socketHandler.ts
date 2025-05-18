@@ -1,6 +1,14 @@
 import { Server } from "socket.io";
 import { socketAuth } from "./socketAuth.ts";
 import { db } from "./db.ts";
+import { addPlayerMoney } from "../controllers/playerController.ts";
+
+
+interface MoneySocketData {
+    type: string,
+    value: number,
+    user: User
+};
 
 export const socketHandler = (io: Server) => {
     io.use(socketAuth);
@@ -16,7 +24,7 @@ export const socketHandler = (io: Server) => {
             .run(socket.id, socket.user.playerId);
 
         
-        socket.on("submission", (data) => {
+        socket.on("submission", (data: MoneySocketData) => {
             // 1. verify if its a number
             // 2. find out the admin socket id by consulting the database
             // 3. send a "request-approval" like message to the admin only (with the type in the data)
@@ -26,9 +34,7 @@ export const socketHandler = (io: Server) => {
             // 5. if the admin approves, it will send a "response-accept" message
             // 6. the database will be updated with the new amount of money for the user who made the request
             // 7. the user will receive a pop up alert saying that he got approved by the admin
-            console.log(data);
-            const currentUserId = socket.user.id;
-            const currentRoomCode = socket.user.roomCode;
+            const currentPlayerId = socket.user.playerId;
             
             const numberValue = Number(data.value);
             
@@ -39,7 +45,6 @@ export const socketHandler = (io: Server) => {
                 });
                 return;
             }
-            
             
             // find the admin in the room using the room code
             // deno-lint-ignore no-explicit-any
@@ -52,14 +57,18 @@ export const socketHandler = (io: Server) => {
             
             
             if (socket.id == admin.socket_id) {
-                console.log("eu sou o admin otario")
+                if (data.type == "receive") {
+                    addPlayerMoney(currentPlayerId, numberValue);
+                } else {
+                    addPlayerMoney(currentPlayerId, -numberValue)
+                }
+
+                io.to(socket.id).emit("admin-update");
                 return;
-                // TODO: skip the request approval and receive/waste money already
             }
             
             socket.to(admin.socket_id).emit("request-approval", {...data, user: socket.user});
 
-            console.log(socket.user, data);
             
             // ONLY IN THE END OF ALL THING
             // socket.emit("submission-response", {
@@ -74,6 +83,13 @@ export const socketHandler = (io: Server) => {
                 ...data,
                 response: "accept",
             });
+            
+            // very hard coded, sorry. ill refactor this later
+            if (data.type == "receive") {
+                addPlayerMoney(data.user.playerId, data.value);
+            } else {
+                addPlayerMoney(data.user.playerId, -data.value);
+            }
         });
         
         socket.on("response-deny", (data) => {

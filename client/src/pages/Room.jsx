@@ -76,6 +76,10 @@ function Room() {
             }
         });
         
+        newSocket.on("admin-update", () => {
+            fetchUserData();
+        });
+        
         newSocket.on("status-update", (data) => {
             if (data.response == "accept") {
                 toast.info(`O administrador ACEITOU sua solicitação de ${data.type == "receive" ? "RECEBER " + data.value : "GASTAR R$" + data.value }`, {

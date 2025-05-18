@@ -3,6 +3,20 @@ import { db } from "../config/db.ts";
 import jwt from "jsonwebtoken";
 import process from "node:process";
 
+export const addPlayerMoney = (playerId: number, amount: number): boolean => {
+  try {
+    const player: any = db.prepare(`
+        UPDATE players
+        SET balance = balance + (?)
+        WHERE player_id = ?;`)
+      .run(amount, playerId);
+    
+    return true;
+  } catch (error) {
+    console.error(`Error adding ${amount} to player ${playerId}: ${error.message}`);
+    return false;
+  }
+};
 
 export const getPlayerInfo = (req: Request, res: Response) => {
 
