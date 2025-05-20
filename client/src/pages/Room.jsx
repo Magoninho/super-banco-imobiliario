@@ -101,7 +101,7 @@ function Room() {
         
         newSocket.on("status-update", (data) => {
             if (data.response == "accept") {
-                toast.info(`O administrador ACEITOU sua solicitação de ${data.type == "receive" ? "RECEBER " + data.value : "GASTAR R$" + data.value }`, {
+                toast.info(`O administrador ACEITOU sua solicitação de ${data.type == "receive" ? "RECEBER \$" + data.value : "GASTAR \$" + data.value }`, {
                     position: "top-center",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -113,7 +113,7 @@ function Room() {
                     transition: Bounce,
                 });
             } else {
-                toast.error(`O administrador RECUSOU sua solicitação de ${data.type == "receive" ? "RECEBER " + data.value : "GASTAR R$" + data.value }`, {
+                toast.error(`O administrador RECUSOU sua solicitação de ${data.type == "receive" ? "RECEBER \$" + data.value : "GASTAR \$" + data.value }`, {
                     position: "top-center",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -213,7 +213,7 @@ function Room() {
             <SocketContext.Provider value={socket}>
                 {inviteWindow &&
                     <Modal>
-                        <Invite onClose={() => {
+                        <Invite roomCode={roomCode} onClose={() => {
                             setInviteWindow(false);
                         }} />
                     </Modal>
@@ -282,6 +282,7 @@ function Room() {
                     flexDirection: "column"
                 }}>
                     <p>{playerState.admin == 1 ? <CrownIcon /> : <i>person</i>} {playerState.nickname} {playerState.admin == 1 && "(admin)"}</p>
+                    <p><i>vpn_key</i> Código da sala: <b style={{fontFamily: "monospace"}}>{ roomCode }</b></p>
                     
                     <h6>Saldo: <b>$ { playerState.balance }</b></h6>
                 </div>
