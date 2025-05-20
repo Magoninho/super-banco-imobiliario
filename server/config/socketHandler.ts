@@ -44,7 +44,6 @@ export const socketHandler = (io: Server) => {
             
             
             if (targetPlayerRoom?.room_id === currentPlayerRoom?.room_id) {
-                console.log("iguais");
                 // TODO: make separate function
                 try {
                     // Begin transaction
