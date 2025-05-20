@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import copy from 'copy-to-clipboard';
 
-function Invite({ onClose }) {
+function Invite({ roomCode, onClose }) {
     const [url, setUrl] = useState(window.location.href);
     const inputRef = useRef(null);
     return (
@@ -31,7 +31,7 @@ function Invite({ onClose }) {
                         type="text"
                         ref={inputRef}
                         required={true}
-                        value={window.location.href}
+                        value={window.location.origin + '/join?code=' + roomCode}
                         readOnly
                     />
                     <label>URL</label>
