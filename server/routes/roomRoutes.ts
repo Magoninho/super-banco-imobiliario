@@ -29,7 +29,7 @@ router.post("/join",
     joinRoom
 );
 
-router.get("/get-players", getPlayersInRoom);
+router.get("/get-players", verifyToken as RequestHandler, getPlayersInRoom);
 
 router.get("/verify-token", verifyToken as RequestHandler, (req: Request, res: Response) => {
   res.status(200).json({

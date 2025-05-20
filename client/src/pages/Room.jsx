@@ -13,6 +13,7 @@ import io from "socket.io-client";
 
 
 export const SocketContext = createContext();
+export const RoomContext = createContext();
 
 function Room() {
     const [isLoading, setIsLoading] = useState(true);
@@ -44,6 +45,7 @@ function Room() {
             .then(response => response.json())
             .then(result => {
                 setPlayerState(result);
+                setRoomCode(result.room_code);
                 setIsLoading(false);
             })
             .catch(error => console.log('error', error));
@@ -73,6 +75,23 @@ function Room() {
                 newSocket.emit("response-accept", data);
             } else {
                 newSocket.emit("response-deny", data);
+            }
+        });
+        
+        newSocket.on("transfer-response", (data) => {
+            if (data.success) {
+                toast.info(`Você recebeu uma transferência de $ ${data.value} do jogador ${data.sender}!`, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                    transition: Bounce,
+                });
+                fetchUserData();
             }
         });
         
@@ -221,9 +240,14 @@ function Room() {
                 }
 
                 {transferModal &&
-                    <Modal>
-                        <TransferModal handleClose={handleClose} />
-                    </Modal>
+                    <RoomContext.Provider value={roomCode}>
+                        <Modal>
+                            <TransferModal handleClose={(e) => {
+                                setTransferModal(false);
+                                fetchUserData();
+                            }} />
+                        </Modal>
+                    </RoomContext.Provider>
                 }
             </SocketContext.Provider>
 

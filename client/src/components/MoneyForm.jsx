@@ -7,12 +7,14 @@ function MoneyForm({ type = "receive", handleClose }) { // it can be either "rec
     
     useEffect(() => {
         socket.on("submission-response", (data) => {
-            console.log(data);
+            if (!data.success) {
+                alert(data.error);
+            }
         });
     }, []);
     
     const handleSubmit = (e, type, value) => {
-        socket.emit("submission", { type, value })
+        socket.emit("money-request", { type, value })
         handleClose(e);
     };
     

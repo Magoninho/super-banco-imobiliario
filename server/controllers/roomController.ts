@@ -139,11 +139,7 @@ export const joinRoom = async (req: Request, res: Response): Promise<any> => {
 
 export const getPlayersInRoom = (req: Request, res: Response) => {
     const { roomCode } = req.query;
-  
-    // todo: fazer a verificação do token e pegar o room code dele
-    // não vai precisar de middleware nesse caso
-  //
-      
+
     if (roomCode) {
       let players = db.prepare(
           `

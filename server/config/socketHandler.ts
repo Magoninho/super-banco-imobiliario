@@ -7,13 +7,21 @@ import { addPlayerMoney } from "../controllers/playerController.ts";
 interface MoneySocketData {
     type: string,
     value: number,
-    user: User
 };
+
+interface TransferData {
+    value: number,
+    targetPlayerId: number
+}
 
 export const socketHandler = (io: Server) => {
     io.use(socketAuth);
 
     io.on('connection', (socket) => {
+        if (!socket.user) {
+            console.log("user not authenticated");
+            return;
+        }
         const roomCode = socket.user.roomCode;
         // console.log("user connected: " + socket.user.username);
         socket.join(roomCode);
@@ -24,7 +32,57 @@ export const socketHandler = (io: Server) => {
             .run(socket.id, socket.user.playerId);
 
         
-        socket.on("submission", (data: MoneySocketData) => {
+        socket.on("transfer-request", (data: TransferData) => {
+            // 1. verify if the target player coming from data is in the same room as the current player, to avoid security issues
+            // 2. add money to the target user, and remove money from the second (use transactions for this approach)
+            // 3. send socket response
+            console.log(socket.user.playerId);
+            console.log(data.targetPlayerId);
+            
+            const targetPlayerRoom = db.prepare("SELECT room_id FROM players WHERE player_id = ?;").get(data.targetPlayerId) as { room_id: number } | undefined;
+            const currentPlayerRoom = db.prepare("SELECT room_id FROM players WHERE player_id = ?;").get(socket.user.playerId) as { room_id: number } | undefined;
+            
+            
+            if (targetPlayerRoom?.room_id === currentPlayerRoom?.room_id) {
+                console.log("iguais");
+                // TODO: make separate function
+                try {
+                    // Begin transaction
+                    db.prepare("BEGIN TRANSACTION").run();
+
+                    // Tirando o dinheiro do player atual
+                    db.prepare(`
+                        UPDATE players
+                        SET balance = balance - (?)
+                        WHERE player_id = ?;`).run(data.value, socket.user.playerId);
+
+                    // Adicionando o dinheiro na conta do outro jogador
+                    db.prepare(`
+                        UPDATE players
+                        SET balance = balance + (?)
+                        WHERE player_id = ?;`).run(data.value, data.targetPlayerId);
+
+                    db.prepare("COMMIT").run();
+                } catch (error) {
+                    db.prepare("ROLLBACK").run();
+                    console.error("Transaction failed:", error);
+                    return;
+                }
+                
+                const targetUserSocketId = db.prepare(`
+                    SELECT socket_id FROM players WHERE player_id = ?;`).get(data.targetPlayerId) as {socket_id: string};
+
+                socket.to(targetUserSocketId.socket_id).emit("transfer-response", {
+                    success: true,
+                    sender: socket.user.username,
+                    value: data.value
+                });
+            } else {
+                console.log("Target player room not found.");
+            }
+        });
+        
+        socket.on("money-request", (data: MoneySocketData) => {
             // 1. verify if its a number
             // 2. find out the admin socket id by consulting the database
             // 3. send a "request-approval" like message to the admin only (with the type in the data)

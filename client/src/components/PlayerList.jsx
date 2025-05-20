@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import CrownIcon from "../assets/CrownIcon";
 
 function PlayerList({ onClose }) {
     const { roomCode } = useParams();
     const [playerListState, setPlayerListState] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            alert('Erro de autenticação');
+            navigate('/join');
+        }
+
         var requestOptions = {
             method: 'GET',
-            redirect: 'follow'
+            redirect: 'follow',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
           };
           
         // TODO: tirar o room code explicito da url e colocar o token nos headers
@@ -19,7 +30,6 @@ function PlayerList({ onClose }) {
             .then(response => response.text())
             .then(result => {
                 setPlayerListState(JSON.parse(result).filter((elem) => elem.active != 0));
-                console.log(result);
             })
             .catch(error => console.log('error', error));
     }, [])
