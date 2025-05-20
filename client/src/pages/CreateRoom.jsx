@@ -47,7 +47,7 @@ export default function Login() {
     // TODO: stop using axios because of security reasons
 
     axios
-      .post('${ process.env.API_URL || "http://localhost:3000" }/room/create', {
+      .post(`${ process.env.API_URL || "http://localhost:3000" }/room/create`, {
         username,
         roomName,
         password,
