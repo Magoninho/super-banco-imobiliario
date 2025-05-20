@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router";
 import logo from "../assets/SUPER.png";
 import "beercss";
+import { API_URL } from "../config";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -11,34 +12,8 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     setError("");
+  console.log(API_URL);
 
-  //     if (!user || !password) {
-  //         setError("Email and password are required");
-  //         return;
-  //     }
-
-  //     axios.post('https://joofeliperi-jwt-authent-28.deno.dev/auth/login', {
-  //         username: user.trim(),
-  //         password: password
-  //     })
-  //         .then(function (response) {
-  //             const { token, username } = response.data;
-  //             console.log(response.data);
-  //             localStorage.setItem('token', token);
-  //             localStorage.setItem('username', username);
-  //             navigate('/home');
-  //         })
-  //         .catch(function (error) {
-  //             if (error.code == "ERR_NETWORK")
-  //                 setError("Falha na conexão com o servidor");
-  //             else
-  //                 setError('Credenciais invalidas');
-  //         });
-
-  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,7 +22,7 @@ export default function Login() {
     // TODO: stop using axios because of security reasons
 
     axios
-      .post(`${ process.env.API_URL || "http://localhost:3000" }/room/create`, {
+      .post(`${API_URL}/room/create`, {
         username,
         roomName,
         password,

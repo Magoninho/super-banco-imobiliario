@@ -10,6 +10,7 @@ import Invite from "../components/Invite";
 import CrownIcon from "../assets/CrownIcon";
 import "beercss";
 import io from "socket.io-client";
+import { API_URL } from "../config";
 
 export const SocketContext = createContext();
 export const RoomContext = createContext();
@@ -39,12 +40,7 @@ function Room() {
       redirect: "follow",
     };
 
-    fetch(
-      `${
-        process.env.API_URL || "http://localhost:3000"
-      }/player/get-player-info`,
-      requestOptions
-    )
+    fetch(`${API_URL}/player/get-player-info`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setPlayerState(result);
@@ -60,7 +56,7 @@ function Room() {
 
     fetchUserData();
 
-    const newSocket = io("http://localhost:3000", {
+    const newSocket = io(API_URL, {
       auth: {
         token: token,
       },

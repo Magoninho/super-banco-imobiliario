@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import process from "node:process";
 import CrownIcon from "../assets/CrownIcon";
+import { API_URL } from "../config";
 
 function PlayerList({ onClose }) {
   const { roomCode } = useParams();
@@ -27,7 +28,7 @@ function PlayerList({ onClose }) {
     // TODO: tirar o room code explicito da url e colocar o token nos headers
     // que nem eu fiz no Room.jsx e no playerController.ts no backend
     // assim eu evito problemas de segurança
-    fetch(`${ process.env.API_URL || "http://localhost:3000" }/room/get-players?roomCode=${roomCode}`, requestOptions)
+    fetch(`${API_URL}/room/get-players?roomCode=${roomCode}`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         setPlayerListState(

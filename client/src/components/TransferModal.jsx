@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { RoomContext, SocketContext } from "../pages/Room";
 import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
+import { API_URL } from "../config";
 
 function TransferModal({ handleClose }) {
   // it can be either "receive" or "waste"
@@ -32,9 +33,7 @@ function TransferModal({ handleClose }) {
 
     // todo
     fetch(
-      `${
-        process.env.API_URL || "http://localhost:3000"
-      }/room/get-players?roomCode=${roomCode}`,
+      `${API_URL}/room/get-players?roomCode=${roomCode}`,
       requestOptions
     )
       .then((response) => response.text())
