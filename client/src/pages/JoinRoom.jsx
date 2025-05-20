@@ -30,7 +30,7 @@ export default function JoinRoom() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:3000/room/join", requestOptions)
+        fetch(`${ process.env.API_URL || "http://localhost:3000" }/room/join`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 const { token, roomCode } = result;

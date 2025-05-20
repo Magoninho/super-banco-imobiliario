@@ -39,7 +39,7 @@ function ProtectedRoute({ children }) {
             redirect: 'follow' 
         };
 
-        fetch("http://localhost:3000/room/verify-token", requestOptions)
+        fetch(`${ process.env.API_URL || "http://localhost:3000" }/room/verify-token`, requestOptions)
             .then(response => {
                 if (response.ok) {
                     setIsAuthenticated(true);
