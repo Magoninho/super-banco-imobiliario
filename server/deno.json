@@ -1,8 +1,10 @@
 {
+  "nodeModulesDir": "auto",
   "tasks": {
     "dev": "deno run --watch main.ts"
   },
   "imports": {
+    "@felix/bcrypt": "jsr:@felix/bcrypt@^1.0.5",
     "@std/assert": "jsr:@std/assert@1",
     "@types/express": "npm:@types/express@^5.0.1",
     "@types/node": "npm:@types/node@^22.13.10",

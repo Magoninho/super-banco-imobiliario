@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import process from "node:process";
 import { Socket } from "socket.io";
 import { ExtendedError } from "socket.io";
 
@@ -12,7 +11,7 @@ export const socketAuth = (socket: Socket, next: (err?: ExtendedError) => void) 
     }
     
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, Deno.env.get("JWT_SECRET"));
         socket.user = decoded;
     } catch (err) {
         next(new Error("Invalid token" + (err as Error).message));

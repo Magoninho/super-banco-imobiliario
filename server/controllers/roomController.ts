@@ -2,8 +2,7 @@
 // @ts-ignore
 // @ts-types="npm:@types/express"
 import jwt from "jsonwebtoken";
-import process from "node:process";
-import * as bcrypt from "https://deno.land/x/bcrypt/mod.ts";
+import * as bcrypt from "@felix/bcrypt";
 import { Request, Response } from "npm:express";
 import { validationResult } from "express-validator";
 import { db } from "../config/db.ts";
@@ -72,7 +71,7 @@ export const createRoom = async (req: Request, res: Response): Promise<any> => {
         username,
         roomCode,
       },
-      process.env.JWT_SECRET,
+      Deno.env.get("JWT_SECRET"),
       { expiresIn: "1d" }
     );
 
@@ -81,7 +80,7 @@ export const createRoom = async (req: Request, res: Response): Promise<any> => {
       roomCode,
     });
   } catch (err) {
-    res.status(500).send("Error while trying to access the database");
+    res.status(500).send("Error while trying to access the database " + err);
   }
 };
 
@@ -101,7 +100,7 @@ export const joinRoom = async (req: Request, res: Response): Promise<any> => {
 
     const room: Room = db.prepare(`SELECT room_id, password FROM rooms WHERE room_code = ?;`).get(roomCode) as Room;
   
-    const isMatch = await bcrypt.compare(password, room.password);
+    const isMatch = await bcrypt.verify(password, room.password);
   
     // if the password matches
     if (isMatch) {
@@ -119,7 +118,7 @@ export const joinRoom = async (req: Request, res: Response): Promise<any> => {
           username,
           roomCode,
         },
-        process.env.JWT_SECRET,
+        Deno.env.get("JWT_SECRET"),
         { expiresIn: "1d" }
       );
 

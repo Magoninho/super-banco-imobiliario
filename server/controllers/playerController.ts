@@ -1,7 +1,6 @@
 import { Request, Response } from "npm:express";
 import { db } from "../config/db.ts";
 import jwt from "jsonwebtoken";
-import process from "node:process";
 
 export const addPlayerMoney = (playerId: number, amount: number): boolean => {
   try {
@@ -28,7 +27,7 @@ export const getPlayerInfo = (req: Request, res: Response) => {
             return res.status(401).json({ message: 'Authorization token required' });
         }
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, Deno.env.get("JWT_SECRET"));
 
         const { playerId } = decoded;
 
