@@ -5,13 +5,22 @@ import { router as roomRouter } from './routes/roomRoutes.ts';
 import { router as playerRouter } from './routes/playerRoutes.ts';
 import 'dotenv/config';
 import { Server } from "socket.io";
-import { createServer } from "node:http";
+import { createServer } from "node:https";
+import fs from "node:fs";
 import { socketHandler } from "./config/socketHandler.ts";
+import path from "node:path";
 
 const PORT = 3000;
+const decoder = new TextDecoder("utf-8");
+const privateKey = Deno.readFileSync(path.join(import.meta.dirname as string, 'cert', 'key.pem'));
+const certificate = Deno.readFileSync(path.join(import.meta.dirname as string, 'cert', 'certificate.pem'));
+
 
 const app = express();
-const httpServer = createServer(app);
+const httpServer = createServer({
+  key: decoder.decode(privateKey),
+  cert: decoder.decode(certificate)
+}, app);
 
 const io = new Server(httpServer, {
   cors: {
