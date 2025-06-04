@@ -2,6 +2,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "./Room.css";
 import Modal from "../components/Modal";
+import RequestApproval from "../components/RequestApproval";
 import NicknameForm from "../components/NicknameForm";
 import MoneyForm from "../components/MoneyForm";
 import TransferModal from "../components/TransferModal";
@@ -21,6 +22,7 @@ function Room() {
   const [playerState, setPlayerState] = useState(null);
   const [roomCode, setRoomCode] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [requestMessages, setRequestMessages] = useState([]);
 
   // modals
   const [playerList, setPlayerList] = useState(false);
@@ -66,17 +68,7 @@ function Room() {
 
     // request approval dialog (for admin only)
     newSocket.on("request-approval", (data) => {
-      let answer = confirm(
-        `o usuario ${data.user.username} quer ${
-          data.type == "receive" ? "GANHAR" : "GASTAR"
-        } ${data.value}`
-      );
-
-      if (answer) {
-        newSocket.emit("response-accept", data);
-      } else {
-        newSocket.emit("response-deny", data);
-      }
+      setRequestMessages(prevRequestMessages => [...prevRequestMessages, data]);
     });
 
     newSocket.on("transfer-response", (data) => {
@@ -216,6 +208,7 @@ function Room() {
     setReceiveModal(false);
     setWasteModal(false);
     setTransferModal(false);
+    
   };
 
   if (isLoading) {
@@ -225,6 +218,16 @@ function Room() {
   return (
     <>
       <SocketContext.Provider value={socket}>
+        {requestMessages.length > 0 ? 
+          <Modal>
+            {requestMessages.map((messageData, index) => (
+                <RequestApproval key={index} messageData={messageData} handleClose={(e) => {
+                  setRequestMessages(prevRequestMessages => {
+                    return prevRequestMessages.filter((_, i) => i !== index);
+                  });
+                }} />
+            ))}
+          </Modal> :null}
         {inviteWindow && (
           <Modal>
             <Invite

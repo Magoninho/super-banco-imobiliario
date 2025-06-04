@@ -37,7 +37,9 @@ body.light {
     --surface-container-high: #e8e8eb;
     --surface-container-highest: #e2e2e5;
     --success: #006e1c;
+    --success-bg: #78dc77;
     --danger: #bb1614;
+    --danger-bg: #ffb4a9;
 }
 
 body.dark {
@@ -78,6 +80,8 @@ body.dark {
     --surface-container-high: #282a2d;
     --surface-container-highest: #333537;
     --success: #78dc77;
+    --success-bg: #006e1c;
     --danger: #ffb4a9;
+    --danger-bg: #bb1614;
     --stest: #ffffff05;
 }
