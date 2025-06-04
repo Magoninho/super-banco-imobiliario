@@ -180,35 +180,11 @@ function Room() {
     };
   }, []);
 
-  const handleNicknameSubmit = (e) => {
-    e.preventDefault();
-
-    // TODO: send request to set nickname
-
-    setNicknameModal(false);
-  };
-
-  const handleMoneySubmit = (e, type, value) => {
-    e.preventDefault();
-
-    // TODO: only proceed if value is greater than 0
-
-    // TODO:
-    // if type == receive then do stuff to add money on the api
-    // if type == waste then do stuff to remove money on the api
-
-    setReceiveModal(false);
-    setWasteModal(false);
-  };
-
-  const handleMoneyTransferSubmit = (e, value, player1, player2) => {};
-
   const handleClose = (e) => {
     e.preventDefault();
     setReceiveModal(false);
     setWasteModal(false);
     setTransferModal(false);
-    
   };
 
   if (isLoading) {
