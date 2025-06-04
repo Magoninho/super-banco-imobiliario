@@ -3,7 +3,7 @@ import { ToastContainer, toast, Bounce } from "react-toastify";
 import "./Room.css";
 import Modal from "../components/Modal";
 import RequestApproval from "../components/RequestApproval";
-import NicknameForm from "../components/NicknameForm";
+import Options from "../components/Options";
 import MoneyForm from "../components/MoneyForm";
 import TransferModal from "../components/TransferModal";
 import PlayerList from "../components/PlayerList";
@@ -30,6 +30,7 @@ function Room() {
   const [receiveModal, setReceiveModal] = useState(false);
   const [wasteModal, setWasteModal] = useState(false);
   const [transferModal, setTransferModal] = useState(false);
+  const [optionsModal, setOptionsModal] = useState(false);
 
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -185,6 +186,7 @@ function Room() {
     setReceiveModal(false);
     setWasteModal(false);
     setTransferModal(false);
+    setOptionsModal(false);
   };
 
   if (isLoading) {
@@ -214,6 +216,12 @@ function Room() {
             />
           </Modal>
         )}
+        
+        {optionsModal &&
+          <Modal>
+            <Options handleClose={handleClose} />
+          </Modal>
+        }
 
         {playerList && (
           <Modal>
@@ -279,7 +287,9 @@ function Room() {
             <i>Group</i>Jogadores
           </button>
           {admin && (
-            <button>
+            <button onClick={() => {
+              setOptionsModal(true);
+            }}>
               <i>settings</i>Opções
             </button>
           )}
