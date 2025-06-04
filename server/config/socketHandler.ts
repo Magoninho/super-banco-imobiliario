@@ -19,11 +19,9 @@ export const socketHandler = (io: Server) => {
 
     io.on('connection', (socket) => {
         if (!socket.user) {
-            console.log("user not authenticated");
             return;
         }
         const roomCode = socket.user.roomCode;
-        // console.log("user connected: " + socket.user.username);
         socket.join(roomCode);
         socket.to(roomCode).emit("user_joined", (socket.user));
 
@@ -36,8 +34,6 @@ export const socketHandler = (io: Server) => {
             // 1. verify if the target player coming from data is in the same room as the current player, to avoid security issues
             // 2. add money to the target user, and remove money from the second (use transactions for this approach)
             // 3. send socket response
-            console.log(socket.user.playerId);
-            console.log(data.targetPlayerId);
             
             const targetPlayerRoom = db.prepare("SELECT room_id FROM players WHERE player_id = ?;").get(data.targetPlayerId) as { room_id: number } | undefined;
             const currentPlayerRoom = db.prepare("SELECT room_id FROM players WHERE player_id = ?;").get(socket.user.playerId) as { room_id: number } | undefined;
